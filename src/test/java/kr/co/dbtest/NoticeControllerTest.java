@@ -45,7 +45,7 @@ public class NoticeControllerTest {
 	public void registerTest() throws Exception {
 		log.info("registerTest.............");
 		
-		RequestBuilder url = MockMvcRequestBuilders.post("/notice/reqister")
+		RequestBuilder url = MockMvcRequestBuilders.post("/notice/register")
 				.param("title", "control 작성 100")
 				.param("content", "control 내용 100")
 				.param("writer", "control 작성 100");

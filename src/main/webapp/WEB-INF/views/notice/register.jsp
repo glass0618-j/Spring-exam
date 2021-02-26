@@ -49,7 +49,8 @@
 									placeholder="Enter Content"></textarea>
 							</div>
 						</div>
-						<input type="submit" value="Submit" class="btn btn-outline-primary btn-sm" style="float: right;">
+						<input type="submit" value="Submit"
+							class="btn btn-outline-primary btn-sm" style="float: right;">
 						<a href="/notice/list" class="btn btn-outline-secondary btn-sm"
 							style="float: right;">Back List</a>
 					</form>

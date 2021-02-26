@@ -24,38 +24,81 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-				<form action="/board/modify" method="post">
-				<div class="form-group col-md-12">
-					<div class="mb-3">
-						<label for="title" class="form-label">Title</label> <input
-							type="text" class="form-control" id="title" name="title"
-							value='<c:out value="${board.title }"></c:out>' required="required">
-					</div>
-				</div>
-				<div class="form-group col-md-12">
-					<div class="mb-3 row">
-						<label for="writer" class="col-sm-2 col-form-label">Writer</label>
-						<div class="col-sm-10">
-							<input type="text" readonly="readonly"
-								class="form-control-plaintext" id="writer" name="writer"
-								value='<c:out value="${board.writer }"></c:out>'>
+					<form id="actionForm">
+						<div class="form-group col-md-12">
+							<div class="mb-3">
+								<label for="title" class="form-label">Title</label> <input
+									type="text" class="form-control" id="title" name="title"
+									value='<c:out value="${board.title }"></c:out>'
+									required="required">
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="form-group col-md-12">
-					<div class="mb-3">
-						<label for="exampleFormControlTextarea1" class="form-label">Content</label>
-						<textarea class="form-control border border-secondary" id="content" name="content"
-							rows="3" required="required"><c:out value="${board.content }"></c:out></textarea>
-					</div>
-				</div>
-				<input type="hidden" name="bno" id="bno" value="${board.bno }">
-				<input type="submit" class="btn btn-outline-success btn-sm" value="Submit" style="float: right;">
-					<a href="/board/list" class="btn btn-outline-primary btn-sm" style="float: right;">List</a>
+						<div class="form-group col-md-12">
+							<div class="mb-3 row">
+								<label for="writer" class="col-sm-2 col-form-label">Writer</label>
+								<div class="col-sm-10">
+									<input type="text" readonly="readonly"
+										class="form-control-plaintext" id="writer" name="writer"
+										value='<c:out value="${board.writer }"></c:out>'>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<div class="mb-3">
+								<label for="exampleFormControlTextarea1" class="form-label">Content</label>
+								<textarea class="form-control border border-secondary"
+									id="content" name="content" rows="3" required="required"><c:out
+										value="${board.content }"></c:out></textarea>
+							</div>
+						</div>
+						<input type="hidden" name="bno" id="bno" value="${board.bno }">
+						<input type="hidden" name="pageNum" value="${cri.pageNum }">
+						<input type="hidden" name="amount" value="${cri.amount }">
+						<button type="button" class="btn btn-outline-primary btn-sm"
+							id="submitBtn" style="float: right;">Submit</button>
+						<button type="button" class="btn btn-outline-success btn-sm"
+							id="listBtn" style="float: right;">Back List</button>
+						<button type="button" class="btn btn-outline-success btn-sm"
+							id="cancelBtn" style="float: right;">Cancel</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 </main>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		var actionForm = $("#actionForm");
+
+		$("#listBtn").on("click", function(e) {
+			e.preventDefault();
+			actionForm.find("input[name=bno]").remove();
+			actionForm.find("input[name=title]").remove();
+			actionForm.find("input[name=writer]").remove();
+			actionForm.find("textarea[name=content]").remove();
+			actionForm.attr("action", "/board/list")
+			actionForm.attr("method", "get");
+			actionForm.submit();
+		});
+		
+		$("#cancelBtn").on("click", function(e) {
+			e.preventDefault();
+			actionForm.find("input[name=title]").remove();
+			actionForm.find("input[name=writer]").remove();
+			actionForm.find("textarea[name=content]").remove();
+			actionForm.attr("action", "/board/get")
+			actionForm.attr("method", "get");
+			actionForm.submit();
+		});
+		
+		$("#submitBtn").on("click", function(e) {
+			e.preventDefault();
+			actionForm.attr("action", "/board/modify")
+			actionForm.attr("method", "post");
+			actionForm.submit();
+		});
+
+	});
+</script>
 <%@ include file="../includes/footer.jsp"%>

@@ -50,14 +50,16 @@
 									value="${board.content }"></c:out></textarea>
 						</div>
 					</div>
-					<form action="/board/remove" method="post">
+					<form id="actionForm">
 						<input type="hidden" id="bno" name="bno" value="${board.bno }">
-						<input type="button" value="remove" id="btn1"
-							class="btn btn-outline-danger btn-sm" style="float: right;"> <a
-							href="/board/list" class="btn btn-outline-primary btn-sm"
-							style="float: right;">List</a> <a
-							href="/board/modify?bno=${board.bno }"
-							class="btn btn-outline-success btn-sm" style="float: right;">Modify</a>
+						<input type="hidden" name="pageNum" value="${cri.pageNum }">
+						<input type="hidden" name="amount" value="${cri.amount }">
+						<button id="btn1" class="btn btn-outline-danger btn-sm"
+							style="float: right;">Remove</button>
+						<button id="listBtn" class="btn btn-outline-primary btn-sm"
+							style="float: right;">Back List</button>
+						<button id="modifyBtn" class="btn btn-outline-success btn-sm"
+							style="float: right;">Modify</button>
 					</form>
 				</div>
 			</div>
@@ -76,10 +78,9 @@
 				<p>Modal body text goes here.</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary"
-					data-dismiss="modal" id="btn2">Remove</button>
-				<button type="button" class="btn btn-secondary"
-					data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					id="btn2">Remove</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -87,16 +88,35 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		$('#btn1').click(function(e){
+		var actionForm = $("#actionForm");
+
+		$('#btn1').click(function(e) {
 			e.preventDefault();
 			$('.modal-body').html("Are you sure you want remove?")
 			$('.modal').modal("show");
 		});
-		
-		$('#btn2').click(function(e){
-			$('form').submit();
+
+		$('#btn2').click(function(e) {
+			actionForm.attr("action", "/board/remove").attr("method", "post");
+			actionForm.submit();
 		});
 		
+		
+		$("#listBtn").on("click", function(e) {
+			e.preventDefault();
+			actionForm.find("input[name=bno]").remove();
+			actionForm.attr("action", "/board/list")
+			actionForm.attr("method", "get");
+			actionForm.submit();
+		});
+		
+		$("#modifyBtn").on("click", function(e) {
+			e.preventDefault();
+			actionForm.attr("action", "/board/modify")
+			actionForm.attr("method", "get");
+			actionForm.submit();
+		});
+
 	});
 </script>
 <%@ include file="../includes/footer.jsp"%>
