@@ -107,10 +107,14 @@ public class BoardMapperTest {
 	public void searchTest() {
 		log.info("searchTest....");
 		Criteria cri = new Criteria();
-		cri.setType("T");
+		cri.setType("TCW");
+//		cri.setType("C");
 		cri.setKeyword("test");
 		
 		List<BoardVO> list = bm.getListPage(cri);
+		
+		log.info(bm.getTotalCount(cri));
+		
 		for (BoardVO boardVO : list) {
 			log.info(boardVO);
 		}

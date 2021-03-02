@@ -77,6 +77,8 @@ public class BoardController {
 		}
 		ra.addAttribute("pageNum", cri.getPageNum());
 		ra.addAttribute("amount", cri.getAmount());
+		ra.addAttribute("type", cri.getType());
+		ra.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/get?bno="+board.getBno();
 	}
@@ -92,6 +94,8 @@ public class BoardController {
 		}
 		ra.addAttribute("pageNum", cri.getPageNum());
 		ra.addAttribute("amount", cri.getAmount());
+		ra.addAttribute("type", cri.getType());
+		ra.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/list";
 	}

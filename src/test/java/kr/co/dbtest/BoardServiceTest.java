@@ -111,4 +111,20 @@ public class BoardServiceTest {
 		
 		log.info(bs.getTotalCount(null));
 	}
+	
+	@Test
+	public void searchTest() {
+		log.info("searchTest....");
+		Criteria cri = new Criteria();
+		cri.setType("TCW");
+		cri.setKeyword("test");
+		
+		List<BoardVO> list = bs.getList(cri);
+		
+		log.info(bs.getTotalCount(cri));
+		
+		for (BoardVO boardVO : list) {
+			log.info(boardVO);
+		}
+	}
 }

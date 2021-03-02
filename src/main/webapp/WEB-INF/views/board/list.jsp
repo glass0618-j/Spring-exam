@@ -26,17 +26,41 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<div class="input-group">
-						<select class="custom-select col-md-1 amountNum" id="inputGroupSelect04">
-							<option ${page.cri.amount eq 10? 'selected':'' } value="10">10</option>
-							<option ${page.cri.amount eq 20? 'selected':'' } value="20">20</option>
-							<option ${page.cri.amount eq 50? 'selected':'' } value="50">50</option>
-							<option ${page.cri.amount eq 100? 'selected':'' } value="100">100</option>
-						</select>
-						<div class="input-group-append">
-							<button class="btn btn-outline-secondary getAmount" type="button">Button</button>
+					<form action="/board/list" method="get" id="searchForm">
+						<div class="input-group">
+							<select class="custom-select col-md-1 amountNum"
+								id="inputGroupSelect04">
+								<option ${page.cri.amount eq 10? 'selected':'' } value="10">10</option>
+								<option ${page.cri.amount eq 20? 'selected':'' } value="20">20</option>
+								<option ${page.cri.amount eq 50? 'selected':'' } value="50">50</option>
+								<option ${page.cri.amount eq 100? 'selected':'' } value="100">100</option>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary getAmount"
+									type="button">Button</button>
+							</div>
 						</div>
-					</div>
+						<div class="input-group" style="float: right;">
+							<select class="custom-select col-md-1" name="type"
+								id="inputGroupSelect04">
+								<option ${page.cri.type == null? 'selected':'' } value="">---</option>
+								<option ${page.cri.type eq 'T'? 'selected':'' } value="T">제목</option>
+								<option ${page.cri.type eq 'C'? 'selected':'' } value="C">내용</option>
+								<option ${page.cri.type eq 'W'? 'selected':'' } value="W">작성자</option>
+								<option ${page.cri.type eq 'TC'? 'selected':'' } value="TC">제목+내용</option>
+								<option ${page.cri.type eq 'CW'? 'selected':'' } value="CW">내용+작성자</option>
+								<option ${page.cri.type eq 'TW'? 'selected':'' } value="TW">제목+작성자</option>
+								<option ${page.cri.type eq 'TCW'? 'selected':'' } value="TCW">전체</option>
+							</select>
+							<div class="input-group-append">
+								<input type="text" name="keyword" value="${page.cri.keyword }">
+								<input type="hidden" name="pageNum" value="${page.cri.pageNum }">
+								<input type="hidden" name="amount" value="${page.cri.amount }">
+								<button class="btn btn-outline-secondary getSearch"
+									type="button">Button</button>
+							</div>
+						</div>
+					</form>
 					<table class="table table-bordered" id="" width="100%"
 						cellspacing="0">
 						<thead>
@@ -94,11 +118,12 @@
 					<form id="actionForm" method="get">
 						<input type="hidden" name="pageNum" value="${page.cri.pageNum }">
 						<input type="hidden" name="amount" value="${page.cri.amount }">
+						<input type="hidden" name="type" value="${page.cri.type }">
+						<input type="hidden" name="keyword" value="${page.cri.keyword }">
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
 </main>
 <div class="modal" tabindex="-1">
 	<div class="modal-dialog">
@@ -152,7 +177,7 @@
 							actionForm.find("input[name=pageNum]").val(target);
 							actionForm.attr("action", "/board/list").submit();
 						});
-						
+
 						$(".getAmount").on("click", function(e) {
 							e.preventDefault();
 
@@ -179,6 +204,20 @@
 											actionForm.attr("action",
 													"/board/get").submit();
 										});
+
+						var searchForm = $("#searchForm");
+						$(".getSearch").on("click", function(e) {
+							e.preventDefault();
+
+							//var result = $(".getType").val;
+							//console.log(result);
+							searchForm.find("input[name=pageNum]").val(1);
+							//searchForm.append("<input type='hidden' name='type' value='"+result+"'>");
+
+							//console.log("0000000");
+							//console.log("${page.cri.type}");
+							searchForm.submit();
+						});
 
 					});
 </script>
