@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kr.co.domain.BoardVO;
+import kr.co.domain.CommentVO;
 import kr.co.domain.Criteria;
 import kr.co.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,26 @@ public class BoardServiceImp implements BoardService {
 	@Override
 	public Long getTotalCount(Criteria cri) {
 		return boardMapper.getTotalCount(cri);
+	}
+
+	@Override
+	public void comment_register(CommentVO comment) {
+		boardMapper.comment_insert(comment);
+	}
+
+	@Override
+	public List<CommentVO> comment_get_list(Long bno) {
+		return boardMapper.comment_list(bno);
+	}
+
+	@Override
+	public int comment_modify(CommentVO comment) {
+		return boardMapper.comment_update(comment);
+	}
+
+	@Override
+	public int comment_remove(Long id) {
+		return boardMapper.comment_delete(id);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Select;
 
 import kr.co.domain.BoardVO;
+import kr.co.domain.CommentVO;
 import kr.co.domain.Criteria;
 
 public interface BoardMapper {
@@ -25,5 +26,12 @@ public interface BoardMapper {
 	public List<BoardVO> getListPage(Criteria cri);
 	
 	public Long getTotalCount(Criteria cri);
-
+	
+	public void comment_insert(CommentVO comment);
+	
+	public List<CommentVO> comment_list(Long bno);
+	
+	public int comment_update(CommentVO comment);
+	
+	public int comment_delete(Long id);
 }

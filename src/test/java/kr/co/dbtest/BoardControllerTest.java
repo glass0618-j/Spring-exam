@@ -93,4 +93,12 @@ public class BoardControllerTest {
 				.param("keyword", "test");
 		log.info(mock.perform(url).andReturn().getModelAndView());
 	}
+	
+	@Test
+	public void comment_get_listTest() throws Exception {
+		log.info("comment_get_listTest..........");
+		RequestBuilder url = MockMvcRequestBuilders.get("/board/comment/comment_get_list")
+				.param("bno", "4999");
+		log.info(mock.perform(url).andReturn().getModelAndView());
+	}
 }

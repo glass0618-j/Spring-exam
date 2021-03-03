@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.co.domain.BoardVO;
+import kr.co.domain.CommentVO;
 import kr.co.domain.Criteria;
 import kr.co.mapper.BoardMapper;
 import lombok.extern.log4j.Log4j2;
@@ -118,5 +119,45 @@ public class BoardMapperTest {
 		for (BoardVO boardVO : list) {
 			log.info(boardVO);
 		}
+	}
+	
+	@Test
+	public void comment_insertTest() {
+		log.info("comment_insertTest...............");
+		CommentVO comment = new CommentVO();
+		comment.setWriter("comment 작성자 10");
+		comment.setContent("comment 내용 100");
+		comment.setBno(4999L);
+		bm.comment_insert(comment);
+		
+		this.comment_listTest();
+	}
+	
+	@Test
+	public void comment_listTest() {
+		log.info("comment_listTest................");
+		List<CommentVO> list = bm.comment_list(4999L);
+		for (CommentVO commentVO : list) {
+			log.info(commentVO);
+		}
+	}
+	
+	@Test
+	public void comment_updateTest() {
+		log.info("comment_updateTest................");
+		CommentVO comment = new CommentVO();
+		comment.setContent("comment 내용 100");
+		comment.setId(1L);
+		bm.comment_update(comment);
+		
+		this.comment_listTest();
+	}
+	
+	@Test
+	public void comment_deleteTest() {
+		log.info("comment_deleteTest...........");
+		bm.comment_delete(13L);
+		
+		this.comment_listTest();
 	}
 }

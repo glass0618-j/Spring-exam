@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //import com.sun.org.apache.bcel.internal.generic;
 
 import kr.co.domain.BoardVO;
+import kr.co.domain.CommentVO;
 import kr.co.domain.Criteria;
 import kr.co.domain.PageDTO;
 import kr.co.service.BoardService;
@@ -98,6 +99,42 @@ public class BoardController {
 		ra.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/comment/comment_get_list")
+	public void comment_get_list(@RequestParam("bno") Long bno, Model model) {
+		log.info("comment_get_list.................");
+		model.addAttribute("comment", boardService.comment_get_list(bno));
+	}
+	
+	@PostMapping("/comment/comment_register")
+	public String comment_register(CommentVO comment) {
+		log.info("comment_register..............");
+		boardService.comment_register(comment);
+		
+		return "redirect:/board/comment/comment_get_list?bno="+comment.getBno();
+	}
+	
+	@PostMapping("/comment/comment_modify")
+	public String comment_modify(CommentVO comment, RedirectAttributes ra) {
+		log.info("comment_modify..............");
+		int count = boardService.comment_modify(comment);
+		if(count == 1) {
+			ra.addFlashAttribute("comment_result","comment_success");
+		}
+		
+		return "redirect:/board/comment/comment_get_list?bno="+comment.getBno();
+	}
+	
+	@PostMapping("/comment/comment_remove")
+	public String comment_remove(@RequestParam("bno") Long bno, @RequestParam("id") Long id, RedirectAttributes ra) {
+		log.info("comment_remove.....................");
+		int count = boardService.comment_remove(id);
+		if(count == 1) {
+			ra.addFlashAttribute("comment_result", "comment_success");
+		}
+		
+		return "redirect:/board/comment/comment_get_list?bno="+bno;
 	}
 	
 }
