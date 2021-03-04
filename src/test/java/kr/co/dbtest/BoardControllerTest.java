@@ -101,4 +101,33 @@ public class BoardControllerTest {
 				.param("bno", "4999");
 		log.info(mock.perform(url).andReturn().getModelAndView());
 	}
+	
+	@Test
+	public void comment_registerTest() throws Exception {
+		log.info("comment_registerTest..............");
+		RequestBuilder url = MockMvcRequestBuilders.post("/board/comment/comment_register")
+				.param("writer", "작성자 comment 0304")
+				.param("content", "내용 comment 0304")
+				.param("bno", "4999");
+		log.info(mock.perform(url).andReturn().getModelAndView());
+	}
+	
+	@Test
+	public void comment_modifyTest() throws Exception {
+		log.info("comment_modifyTest.................");
+		RequestBuilder url = MockMvcRequestBuilders.post("/board/comment/comment_modify")
+				.param("content", "내용 comment 0304")
+				.param("id", "10")
+				.param("bno", "4999");
+		log.info(mock.perform(url).andReturn().getModelAndView());
+	}
+	
+	@Test
+	public void comment_removeTest() throws Exception {
+		log.info("comment_removeTest.................");
+		RequestBuilder url = MockMvcRequestBuilders.post("/board/comment/comment_remove")
+				.param("id", "21")
+				.param("bno", "4999");
+		log.info(mock.perform(url).andReturn().getModelAndView());
+	}
 }

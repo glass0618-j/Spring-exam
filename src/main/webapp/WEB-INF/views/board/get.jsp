@@ -54,9 +54,9 @@
 						<input type="hidden" id="bno" name="bno" value="${board.bno }">
 						<input type="hidden" name="pageNum" value="${cri.pageNum }">
 						<input type="hidden" name="amount" value="${cri.amount }">
-						<input type="hidden" name="type" value="${cri.type }">
-						<input type="hidden" name="keyword" value="${cri.keyword }">
-						
+						<input type="hidden" name="type" value="${cri.type }"> <input
+							type="hidden" name="keyword" value="${cri.keyword }">
+
 						<button id="btn1" class="btn btn-outline-danger btn-sm"
 							style="float: right;">Remove</button>
 						<button id="listBtn" class="btn btn-outline-primary btn-sm"
@@ -65,9 +65,16 @@
 							style="float: right;">Modify</button>
 					</form>
 				</div>
+				<p></p>
+				<div class="input-group">
+					<input type="text" class="input-group-text" placeholder="Enter Writer">
+					<textarea class="form-control" placeholder="Enter Comment"></textarea>
+					<button type="button" class="btn btn-primary">Submit</button>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div id="comment_list"></div>
 </main>
 <div class="modal" tabindex="-1">
 	<div class="modal-dialog">
@@ -90,7 +97,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {
-		
+
 		var actionForm = $("#actionForm");
 
 		$('#btn1').click(function(e) {
@@ -103,8 +110,7 @@
 			actionForm.attr("action", "/board/remove").attr("method", "post");
 			actionForm.submit();
 		});
-		
-		
+
 		$("#listBtn").on("click", function(e) {
 			e.preventDefault();
 			actionForm.find("input[name=bno]").remove();
@@ -112,14 +118,28 @@
 			actionForm.attr("method", "get");
 			actionForm.submit();
 		});
-		
+
 		$("#modifyBtn").on("click", function(e) {
 			e.preventDefault();
 			actionForm.attr("action", "/board/modify")
 			actionForm.attr("method", "get");
 			actionForm.submit();
 		});
-
+		
+		comment_list();
+		
+		function comment_list(){
+			$.ajax({
+				type : "GET",
+				url : "/board/comment/comment_get_list?bno=${board.bno}",
+				success : function(result){
+					$("#comment_list").html(result);
+				},
+				error : function(req, text){
+					alert(text+" : "+req.status);
+				}
+			});
+		}
 	});
 </script>
 <%@ include file="../includes/footer.jsp"%>
