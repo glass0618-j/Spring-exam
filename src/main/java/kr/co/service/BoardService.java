@@ -28,7 +28,7 @@ public interface BoardService {
 	
 	public List<CommentVO> comment_get_list(Long bno);
 	
-	public int comment_modify(CommentVO comment);
+	public void comment_modify(CommentVO comment);
 	
-	public int comment_remove(Long id);
+	public void comment_remove(Long id);
 }

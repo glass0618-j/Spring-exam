@@ -67,16 +67,16 @@
 				</div>
 				<p></p>
 				<div class="input-group">
-					<input type="text" class="input-group-text" placeholder="Enter Writer">
-					<textarea class="form-control" placeholder="Enter Comment"></textarea>
-					<button type="button" class="btn btn-primary">Submit</button>
+					<input type="text" class="input-group-text" placeholder="Enter Writer" id="comment_writer">
+					<textarea class="form-control" placeholder="Enter Comment" id="comment_content"></textarea>
+					<button type="button" class="btn btn-primary" id="comment_register">Submit</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div id="comment_list"></div>
 </main>
-<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1" id="board_modal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -84,7 +84,7 @@
 				<button type="button" class="btn-close" data-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" id="board_modal_body">
 				<p>Modal body text goes here.</p>
 			</div>
 			<div class="modal-footer">
@@ -102,8 +102,8 @@
 
 		$('#btn1').click(function(e) {
 			e.preventDefault();
-			$('.modal-body').html("Are you sure you want remove?")
-			$('.modal').modal("show");
+			$('#board_modal_body').html("Are you sure you want remove?")
+			$('#board_modal').modal("show");
 		});
 
 		$('#btn2').click(function(e) {
@@ -140,6 +140,36 @@
 				}
 			});
 		}
+		
+		$("#comment_register").on("click", function(e){
+				e.preventDefault();
+			
+			var comment = new Object();
+			comment.content = $("#comment_content").val();
+			comment.writer = $("#comment_writer").val();
+			
+			if(comment.content === "" || comment.writer===""){
+				alert("댓글을 입력하세요.");
+				return;
+			}
+			
+			comment.bno = "<c:out value='${board.bno}'></c:out>";
+			
+			$.ajax({
+				data : JSON.stringify(comment),
+				contentType : "application/json; charset=utf-8",
+				type : "POST",
+				url : "/board/comment/comment_register",
+				success : function(){
+					comment.content = $("#comment_content").val("");
+					comment.writer = $("#comment_writer").val("");
+					comment_list();
+				},
+				error : function(req, text){
+					alert(text+" : "+req.status);
+				}
+			});
+		});	
 	});
 </script>
 <%@ include file="../includes/footer.jsp"%>

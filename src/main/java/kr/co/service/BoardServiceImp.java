@@ -68,13 +68,13 @@ public class BoardServiceImp implements BoardService {
 	}
 
 	@Override
-	public int comment_modify(CommentVO comment) {
-		return boardMapper.comment_update(comment);
+	public void comment_modify(CommentVO comment) {
+		boardMapper.comment_update(comment);
 	}
 
 	@Override
-	public int comment_remove(Long id) {
-		return boardMapper.comment_delete(id);
+	public void comment_remove(Long id) {
+		boardMapper.comment_delete(id);
 	}
 
 }
