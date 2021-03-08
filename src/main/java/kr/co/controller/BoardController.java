@@ -1,5 +1,8 @@
 package kr.co.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //import com.sun.org.apache.bcel.internal.generic;
@@ -19,6 +23,7 @@ import kr.co.domain.CommentVO;
 import kr.co.domain.Criteria;
 import kr.co.domain.PageDTO;
 import kr.co.service.BoardService;
+import kr.co.service.Common;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -29,6 +34,9 @@ import lombok.extern.log4j.Log4j2;
 public class BoardController {
 	
 	private final BoardService boardService;
+	
+	@Autowired
+	private Common common;
 	
 //	@GetMapping("/list")
 //	public void list(Model model) {
@@ -45,9 +53,13 @@ public class BoardController {
 	
 	
 	@PostMapping("/register")
-	public String register(BoardVO board, RedirectAttributes ra) {
+	public String register(BoardVO board, RedirectAttributes ra,@ModelAttribute("file") @RequestParam("file") MultipartFile file, HttpSession session) {
 		log.info("register...............");
 		log.info("register : "+board.getTitle()+"....................");
+		if(file.getSize() > 0) {
+			board.setFilename(file.getOriginalFilename());
+			board.setFilepath(common.upload("board", file, session));
+		}
 //		boardService.register(board);
 		long bno = boardService.registerSelectKey(board);
 //		ra.addAttribute("result", bno);

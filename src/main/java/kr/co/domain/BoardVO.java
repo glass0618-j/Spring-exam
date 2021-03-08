@@ -9,6 +9,6 @@ import lombok.Data;
 public class BoardVO {
 	
 	private Long bno;
-	private String title, content, writer;
+	private String title, content, writer, filename, filepath;
 	private Date regdate, updatedate;
 }

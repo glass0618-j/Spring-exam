@@ -24,7 +24,7 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<form action="/board/register" method="post">
+					<form action="/board/register" method="post" enctype="multipart/form-data">
 						<div class="form-group col-md-12">
 							<div class="mb-3">
 								<label for="title" class="form-label">Title</label> <input
@@ -49,7 +49,13 @@
 									placeholder="Enter Content"></textarea>
 							</div>
 						</div>
-						<input type="submit" value="Submit" class="btn btn-outline-primary btn-sm" style="float: right;">
+						<div class="form-group col-md-12">
+							<div class="input-group mb-3">
+								<input type="file" class="form-control" name="file" id="inputGroupFile02">
+							</div>
+						</div>
+						<input type="submit" value="Submit"
+							class="btn btn-outline-primary btn-sm" style="float: right;">
 						<a href="/board/list" class="btn btn-outline-secondary btn-sm"
 							style="float: right;">Back List</a>
 					</form>

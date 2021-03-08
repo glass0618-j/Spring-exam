@@ -49,6 +49,7 @@ public class BoardControllerTest {
 				.param("title", "Control 작성 200")
 				.param("content", "Control 내용 200")
 				.param("writer", "Controll 작성 200");
+				
 		
 		log.info(mock.perform(url).andReturn().getModelAndView());
 	}
