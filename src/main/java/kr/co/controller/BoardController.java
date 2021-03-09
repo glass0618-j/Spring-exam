@@ -1,5 +1,8 @@
 package kr.co.controller;
 
+import java.io.File;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,10 +82,30 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes ra) {
+	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes ra, @ModelAttribute("file") MultipartFile file, HttpSession session, @RequestParam("attach") String attach) {
 		log.info("modify...............");
 		
 		log.info("modify"+board.getBno());
+		
+//		String uuid = session.getServletContext().getRealPath("resources") + board.getFilepath();
+		String uuid = "D:\\Kangjh\\eclipseExam\\Gjgreen\\src\\main\\webapp\\resources" + board.getFilepath();
+		
+		if(file.getSize() > 0) {
+			board.setFilename(file.getOriginalFilename());
+			board.setFilepath(common.upload("board", file, session));
+			
+			File f = new File(uuid);
+			if(f.exists()) {
+				f.delete();
+			}
+		}
+		
+		if(attach.equals("y")) {
+			File f = new File(uuid);
+			if(f.exists()) {
+				f.delete();
+			}
+		}
 		
 		int count = boardService.modify(board);
 		
@@ -101,6 +123,12 @@ public class BoardController {
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes ra) {
 		log.info("remove...............");
+		
+		File file = new File("D:\\Kangjh\\eclipseExam\\Gjgreen\\src\\main\\webapp\\resources" + boardService.get(bno).getFilepath());
+		
+		if(file.exists()) {
+			file.delete();
+		}
 		
 		int count = boardService.remove(bno);
 		
@@ -143,6 +171,13 @@ public class BoardController {
 	public void comment_remove(@RequestBody CommentVO comment) {
 		log.info("comment_remove.....................");
 		boardService.comment_remove(comment.getId());
+	}
+	
+	@ResponseBody //데이터 자체가 필요?
+	@GetMapping("/download")
+	public File download(@RequestParam("bno") Long bno, HttpSession session, HttpServletResponse response) {
+		
+		return common.download(boardService.get(bno).getFilepath(), boardService.get(bno).getFilename(), session, response);
 	}
 	
 }

@@ -24,7 +24,7 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<form id="actionForm">
+					<form id="actionForm" enctype="multipart/form-data">
 						<div class="form-group col-md-12">
 							<div class="mb-3">
 								<label for="title" class="form-label">Title</label> <input
@@ -51,11 +51,28 @@
 										value="${board.content }"></c:out></textarea>
 							</div>
 						</div>
+						<div class="form-group col-md-12">
+							<div class="mb-3">
+								<c:if test="${board.filename != null }">
+									<div id="filename"></div>
+									<button type="button"
+										class="btn btn-outline-primary btn-sm fileDelete"
+										id="inputGroupFileAddon04">File Delete</button>
+
+								</c:if>
+								<div class="input-group">
+									<input type="file" class="form-control" name="file"
+										id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+										aria-label="Upload"> <input type="hidden" id="attach" name="attach"
+										value="n">
+								</div>
+							</div>
+						</div>
 						<input type="hidden" name="bno" id="bno" value="${board.bno }">
 						<input type="hidden" name="pageNum" value="${cri.pageNum }">
 						<input type="hidden" name="amount" value="${cri.amount }">
-						<input type="hidden" name="type" value="${cri.type }">
-						<input type="hidden" name="keyword" value="${cri.keyword }">
+						<input type="hidden" name="type" value="${cri.type }"> <input
+							type="hidden" name="keyword" value="${cri.keyword }">
 						<button type="button" class="btn btn-outline-primary btn-sm"
 							id="submitBtn" style="float: right;">Submit</button>
 						<button type="button" class="btn btn-outline-success btn-sm"
@@ -70,7 +87,7 @@
 </main>
 <script type="text/javascript">
 	$(document).ready(function() {
-		
+
 		var actionForm = $("#actionForm");
 
 		$("#listBtn").on("click", function(e) {
@@ -83,7 +100,7 @@
 			actionForm.attr("method", "get");
 			actionForm.submit();
 		});
-		
+
 		$("#cancelBtn").on("click", function(e) {
 			e.preventDefault();
 			actionForm.find("input[name=title]").remove();
@@ -93,7 +110,7 @@
 			actionForm.attr("method", "get");
 			actionForm.submit();
 		});
-		
+
 		$("#submitBtn").on("click", function(e) {
 			e.preventDefault();
 			actionForm.attr("action", "/board/modify")
@@ -101,6 +118,25 @@
 			actionForm.submit();
 		});
 
+		filenameShow();
+
+		function filenameShow() {
+			if ($("#attach").val() === "y") {
+				$("#filename").html("");
+			} else {
+				$("#filename").html("${board.filename}");
+			}
+		}
+
+		$(".fileDelete").on("click", function(e) {
+			e.preventDefault();
+			if ($("#attach").val() === "y") {
+				$("#attach").val("n");
+			} else {
+				$("#attach").val("y");
+			}
+			filenameShow();
+		});
 	});
 </script>
 <%@ include file="../includes/footer.jsp"%>

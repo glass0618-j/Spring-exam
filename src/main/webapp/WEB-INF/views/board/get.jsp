@@ -49,7 +49,15 @@
 								id="content" name="content" rows="3" readonly="readonly"><c:out
 									value="${board.content }"></c:out></textarea>
 						</div>
-					</div>
+						</div>
+						<c:if test="${board.filename != null }">
+						<div class="form-group col-md-12">
+							<c:out value="${board.filename }"></c:out>
+							<button type="button" id="download" class="btn btn-outline-primary btn-sm"
+								style="float: right;">Download</button>
+								<div class="mb-3"></div>
+						</div>
+						</c:if>
 					<form id="actionForm">
 						<input type="hidden" id="bno" name="bno" value="${board.bno }">
 						<input type="hidden" name="pageNum" value="${cri.pageNum }">
@@ -67,8 +75,10 @@
 				</div>
 				<p></p>
 				<div class="input-group">
-					<input type="text" class="input-group-text" placeholder="Enter Writer" id="comment_writer">
-					<textarea class="form-control" placeholder="Enter Comment" id="comment_content"></textarea>
+					<input type="text" class="input-group-text"
+						placeholder="Enter Writer" id="comment_writer">
+					<textarea class="form-control" placeholder="Enter Comment"
+						id="comment_content"></textarea>
 					<button type="button" class="btn btn-primary" id="comment_register">Submit</button>
 				</div>
 			</div>
@@ -125,51 +135,54 @@
 			actionForm.attr("method", "get");
 			actionForm.submit();
 		});
-		
+
 		comment_list();
-		
-		function comment_list(){
+
+		function comment_list() {
 			$.ajax({
 				type : "GET",
 				url : "/board/comment/comment_get_list?bno=${board.bno}",
-				success : function(result){
+				success : function(result) {
 					$("#comment_list").html(result);
 				},
-				error : function(req, text){
-					alert(text+" : "+req.status);
+				error : function(req, text) {
+					alert(text + " : " + req.status);
 				}
 			});
 		}
-		
-		$("#comment_register").on("click", function(e){
-				e.preventDefault();
-			
+
+		$("#comment_register").on("click", function(e) {
+			e.preventDefault();
+
 			var comment = new Object();
 			comment.content = $("#comment_content").val();
 			comment.writer = $("#comment_writer").val();
-			
-			if(comment.content === "" || comment.writer===""){
+
+			if (comment.content === "" || comment.writer === "") {
 				alert("댓글을 입력하세요.");
 				return;
 			}
-			
+
 			comment.bno = "<c:out value='${board.bno}'></c:out>";
-			
+
 			$.ajax({
 				data : JSON.stringify(comment),
 				contentType : "application/json; charset=utf-8",
 				type : "POST",
 				url : "/board/comment/comment_register",
-				success : function(){
+				success : function() {
 					comment.content = $("#comment_content").val("");
 					comment.writer = $("#comment_writer").val("");
 					comment_list();
 				},
-				error : function(req, text){
-					alert(text+" : "+req.status);
+				error : function(req, text) {
+					alert(text + " : " + req.status);
 				}
 			});
-		});	
+		});
+		$("#download").on("click", function(){
+			location = '/board/download?bno=${board.bno}';
+		});
 	});
 </script>
 <%@ include file="../includes/footer.jsp"%>
